@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <h6 class="text-center">
+        You have been logged out 
+      </h6>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>
+
+{% endblock %}

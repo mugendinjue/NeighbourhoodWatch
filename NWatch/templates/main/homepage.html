@@ -1,0 +1,82 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+{{block.super}}
+
+<script src="{% static 'js/home.js' %}"></script>
+
+{% endblock %}
+
+{% block styles %}
+{{block.super}}
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container-fluid above">
+  <div class="bg">
+    <div>
+      <h4 class="text-center" id="text">THE NEIGHBORHOOD</h4>
+      <h6 class="text-center" id="hood" style="color: #FDE8E9;font-size: 20px;">
+        We all have neighbors. Greet them on the sidewalk or in the elevator, but try not to peer through their windows. Windows are to look out from, not into.     
+      </h6>
+      <p class="text-center" style="color: #FDE8E9;font-size: 20px;">
+        You can 
+        <a href="#" id="createN">join by creating</a>
+        your own neighbourhood or
+        <a href="{% url 'allhoods' %}"> join the already</a>
+        existing hoods
+      </p>
+    </div>
+  </div> 
+</div>
+
+
+
+<!-- the neighbourhood modal -->
+{% if user != you_admin %}
+
+<div id="neighbourhood" class="hood">
+  <div class="content">
+    <span class="close">&times;</span>
+    <h4 class="text-center"><strong>Create Neighbourhood</strong></h4>
+
+
+    <P class="text-center" style="color: lightcoral;">
+      Note that when you create a new Neigbourhood,you automatically become the Admin of that group
+    </P>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      <small>{{ message }}</small>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="form-group">
+      <form action="" id="the_hood" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{n_form|crispy}}
+        <div class="form-group">
+          <input type="submit" class="btn btn-outline-info submit" value="Submit">
+        </div>
+      </form>
+      <input type="hidden" class="get_user_id" value="{{user.id}}">
+    </div>
+    {% else %}
+
+    <P class="text-center" style="color: lightcoral;">
+      You already are an admin to another account
+    </P>
+    {% endif %}
+  </div>
+</div>
+
+
+{% endblock %}

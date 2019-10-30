@@ -1,0 +1,146 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block scripts %}
+{{block.super}}
+<script src="{% static 'js/profile.js' %}"></script>
+
+{% endblock %}
+
+{% block styles %}
+{{block.super}}
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header profile_pic_background">
+          <img src="{{user.profile.profile_pic.url}}" alt=""
+            style="border-radius: 50%; border: solid thin lightcoral; padding: 5px;" width="250" height="250">
+          <div class="display_name">
+            <div class="card-img-overlay">
+              <h1 class="text-center ml-3 pl-3 mr-3 pr-3 pt-1 mt-1">
+                {{user.username}}
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+          <div class="col-md-6 left">
+            <h5 class="text-center">CONTACTS</h5>
+            <hr>
+            <h6>
+              Email : {{user.email}}
+            </h6>
+            <hr>
+            <h6>
+              Phone_number : +254{{user.profile.phone_number}}
+            </h6>
+          </div>
+          <div class="col-md-6">
+            <h5 class="text-center">BIO</h5>
+            <hr>
+            {% if user.profile.bio %}
+            <strong><small>{{user.profile.bio}}</small></strong>
+            {% else %}
+            <p class="text-center">
+              No Profile Bio
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        <hr>
+        <h5 class="text-center">
+          General Info
+        </h5>
+        <hr>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <h6>
+              NeighbourHood : {{get_my_hood.neighbourhood}}
+            </h6>
+            <hr>
+            <h6>
+              {% if user.profile.plot_number %}
+              Plot_number : {{user.profile.plot_number}}
+              {% else %}
+              Plot_number : n/a
+              {% endif %}
+            </h6>
+            <hr>
+            {% if user.profile.occupation %}
+            <h6>
+              Occupation : {{user.profile.occupation}}
+            </h6>
+            {% else %}
+            <p>
+              Occupation : n/a
+            </p>
+            {% endif %}
+            <hr>
+          </div>
+          <div class="col-md-2">
+            <a href="#" class="btn btn-outline-info" id="createB">Add a business</a>
+            <a href="#" class="btn btn-outline-info mt-3" id="addOccupant">Add occupants</a>
+          </div>
+        </div>
+        </div>
+        {% if get_my_bizz %}
+        <div class="card-footer">
+          <h4 class="text-center">
+            My Businesses
+          </h4>
+          {% for biz in get_my_bizz %}
+            <h6 class="text-center">
+              Company : {{biz.name}}
+              Email : {{biz.business_email}}
+              Hood : {{biz.neighbourhood}}
+            </h6>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- the new business modal -->
+<div id="biz" class="business">
+  <div class="content">
+    <span class="close">&times;</span>
+    <h4 class="text-center"><strong>Add a business</strong></h4>
+    <div class="form-group">
+      <form action="" id="the_biz">
+        {% csrf_token %}
+        {{biz_form|crispy}}
+        <div class="form-group">
+          <input type="submit" class="btn btn-outline-info submit"  value="Submit">
+        </div>
+      </form>
+      <input type="hidden" class="get_user_id" value="{{user.id}}">
+    </div>
+  </div>
+</div>
+
+<!-- the occupants acceptance modal -->
+<div id="occupants" class="occupants">
+  <div class="content">
+    <span class="close">&times;</span>
+    <h4 class="text-center"><strong>Add Occupants</strong></h4>
+    <ul>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

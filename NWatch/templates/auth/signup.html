@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+     <div class="form-group">
+       <form action="{% url 'signup' %}" method="POST">
+         {% csrf_token %}
+         {{r_form|crispy}}
+         <div class="form-group">
+           <input type="submit" class="btn btn-outline-info" value="Register">
+         </div>
+       </form>
+       <div class="border-top pt-3">
+        <small class="text-muted">Already have an account ? <a href="{% url 'login' %}" class="ml-2">login</a></small>
+      </div>
+     </div>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>
+
+{% endblock %}

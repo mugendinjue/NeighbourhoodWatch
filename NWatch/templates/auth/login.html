@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        <small>{{ message }}</small>
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="form-group">
+        <form action="" method="POST">
+          {% csrf_token %}
+          {{form|crispy}}
+          <input type="submit" class="btn btn-outline-info" value="login">
+          <small>
+            <p><strong>Dont </strong>have an Account <a href="{% url 'signup' %}">Register</a></p>
+          </small>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>
+
+{% endblock %}

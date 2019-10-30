@@ -1,0 +1,168 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block scripts %}
+{{block.super}}
+<script src="{% static 'js/myhood.js' %}"></script>
+{% endblock %}
+
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/myhood.css' %}">
+
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid home">
+  <div class="row">
+    <div class="col-md-2 left-side" style="position: sticky; top: 0;" >
+      {% csrf_token %}
+
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        <small>{{ message }}</small>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <input type="hidden" class="myhood" value="{{my_hood.neighbourhood.id}}">
+      <input type="hidden" class="currentuser" value="{{user.id}}">
+      <div style="border: solid lightslategray thin ; border-radius: 25%;" class="pt-1 pl-1 pr-1 pb-1">
+        <a href="#" class="text-center" id="hood_health">
+          Add a Health contact
+        </a>
+      </div>
+      <div class="form-group" id="health_form">
+        <form action="" id="form_health" method="POST">
+          {% csrf_token %}
+          {{health_form|crispy}}
+          <input type="submit" class="btn btn-outline-info " id="af_submit" value="Submit">
+        </form>
+      </div>
+      <div style="border: solid lightslategray thin ; border-radius: 25%;" class=" mt-3 pt-1 pl-1 pr-1 pb-1">
+        <a href="#" class="text-center" id="hood_security">
+          Add a security contact
+        </a>
+      </div>
+      <div class="form-group" id="security_form">
+        <form action="" id="form_security">
+          {% csrf_token %}
+          {{security_form|crispy}}
+          <input type="submit" class="btn btn-outline-info " id="on_submit" value="Submit">
+        </form>
+      </div>
+      <div class="mt-3" style="border: solid lightcoral ;">
+        <small><strong>
+            Emergency Contacts
+          </strong></small>
+      </div>
+      <hr>
+      <p class="text-center">
+        Hospitals
+      </p>
+      {% if health_contacts %}
+      {% for contact in health_contacts %}
+      <div>
+        <small><strong>{{contact.Health_center_name}} : +254{{contact.Health_center_phone_number}}</strong></small>
+        <br>
+        <a href="#" id="showS">
+          <small><strong>more</strong></small>
+        </a>
+        <div id="showD">
+          <small><strong>Address : {{contact.Health_center_address}}</strong></small><br>
+          <small><strong>Email : {{contact.Health_center_email}}</strong></small><br>
+          <small><strong>Hood : {{contact.neighbourhood}}</strong></small><br>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <br>
+      <p class="text-center">
+        Security
+      </p>
+      {% if security_contacts %}
+      {% for contact in security_contacts %}
+      <div>
+        <small><strong>{{contact.Police_station_name}} : +254{{contact.Police_station_phone_number}}</strong></small>
+        <br>
+        <a href="#" id="showmore">
+          <small><strong>show more</strong></small>
+          <small><strong id="showless">show less</strong></small>
+        </a>
+        <div id="more">
+          <small><strong>Address : {{contact.Police_station_address}}</strong></small><br>
+          <small><strong>Email : {{contact.Police_station_email}}</strong></small><br>
+          <small><strong>Hood : {{contact.neighbourhood}}</strong></small><br>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <div class="heading">
+        <h1 class="text-center">
+          Welcome to the {{my_hood.neighbourhood}} Community
+        </h1>
+        <h5 class="text-center">
+          Admin : {{my_hood.neighbourhood.neighbourhood_admin}}  Members : {{other_neighbours|length}}
+        </h5>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <a href="#" class="mt-3 pt-3" id="post">
+            <img src="{{user.profile.profile_pic.url}}" style="border-radius: 50%;" height="40" width="40" alt="">
+            <strong class="mr-2 pl-2">Post</strong>
+          </a>
+        </div>
+        <hr>
+        {% if hood_story %}
+        {% for timeline in hood_story %}
+        <div class="card mt-3 pt-3 mr-2">
+          <div class="card-header" id="flex">
+              <strong class="mr-2 pl-2">{{timeline.title}}</strong> 
+              <p>By {{timeline.user}}</p>
+          </div>
+          <div class="card-body">
+            <p>{{timeline.story}}</p>
+          </div>
+          <div class="card-footer">
+            Posted : {{timeline.posted_on|timesince}} ago
+          </div>
+        </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  <div class="col-md-2 right-side">
+    {% for the_user in other_neighbours %}
+    <a href="#" class="mt-3 pt-3 ">
+      <img src="{{the_user.user.profile.profile_pic.url}}" style="border-radius: 50%;" height="40" width="40" alt="">
+      <strong class="mr-2 pl-2">{{the_user.user.username}}</strong>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+
+<!-- the post modal -->
+<div id="user_post" class="user_post">
+  <div class="content">
+    <span class="close">&times;</span>
+    <h4 class="text-center"><strong>Add A Post</strong></h4>
+    <div class="form-group">
+      <form action="" method="POST" id="postForm">
+        {% csrf_token %}
+        {{post_form|crispy}}
+        <input type="submit" id="submit" class="btn btn-outline-info" value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

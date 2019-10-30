@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+
+{% block scripts %}
+{{block.super}}
+<!-- <script src="{% static 'js/profile.js' %}"></script> -->
+
+{% endblock %}
+
+{% block styles %}
+{{block.super}}
+
+<!-- <link rel="stylesheet" href="{% static 'css/profile.css' %}"> -->
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    {% if hoods %}
+    <h5 class="text-center" style="color: green;">Hoods Available </h5>
+    {% for hood in hoods %}
+    <div class="col-md-3">
+      <div class="card mt-2">
+        <div class="card-header">
+          <img src="{{hood.hood_logo.url}}" alt="hoodlogo" class="card-img-top">
+        </div>
+        <div class="card-body">
+          <h3 class="text-center">
+            {{hood.neighbourhood_name}}
+          </h3>
+          <div class="info">
+            <p>Location : {{hood.neighbourhood_location}}</p>
+            <p class="ml-3">Population : {{hood.occupants}}</p>
+          </div>
+          <div class="links">
+            <a href="{% url 'joinhood' hood_id=hood.id user_id=user.id %}" class="btn btn-outline-info mt-3">Join
+              Hood</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+    {% if users %}
+    <h5 class="text-center" style="color: green;">Users Available </h5>
+    {% for user in users %}
+    <a href="#">
+    <img src="{{user.profile.profile_pic.url}}" style="border-radius: 50%;" height="50" width="50" alt="">
+    <strong class="mr-2 pl-2">{{user.username}}</strong>
+    </a>
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+    {% if business %}
+    <h5 class="text-center" style="color: green;">Business Available </h5>
+    {% for biz in business %}
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+    {% if health %}
+    <h5 class="text-center" style="color: green;">Health Available </h5>
+    {% for h in health %}
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+    {% if security %}
+    <h5 class="text-center" style="color: green;">Security Available </h5>
+    {% for s in security %}
+    {% endfor %}
+    {% endif %}
+  </div>
+  <div class="row">
+    {% if posts %}
+    <h5 class="text-center" style="color: green;">Posts Available </h5>
+    {% for post in posts %}
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block styles %}
+{{block.super}} 
+<link rel="stylesheet" href="{% static 'css/hood.css' %}">
+
+{% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    {% for hood in hoods %}
+      <div class="col-md-4">
+        <div class="card mt-2">
+          <div class="card-header">
+            <img src="{{hood.hood_logo.url}}" alt="hoodlogo" class="card-img-top">
+          </div>
+          <div class="card-body">
+            <h3 class="text-center">
+              {{hood.neighbourhood_name}}
+            </h3>
+            <div class="info">
+              <p>Location : {{hood.neighbourhood_location}}</p>
+              <p class="ml-3">Population : {{hood.occupants}}</p>
+            </div>
+            <div class="links">
+              {% if hood.neighbourhood_name == userN.neighbourhood %}
+                <a href="#" class="btn btn-outline-danger mt-3">Leave Hood</a>
+              {% else %}
+                <a href="{% url 'joinhood' hood_id=hood.id user_id=user.id %}" class="btn btn-outline-info mt-3">Join Hood</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

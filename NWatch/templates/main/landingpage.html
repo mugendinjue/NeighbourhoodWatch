@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block styles %}
+{{block.super}}
+<link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+
+{% endblock %}
+{% block content %}
+
+
+
+<div class="container-fluid above">
+  
+</div>
+<div class="bg">
+  <h4 class="text-center" id="text">WELCOME TO THE NEIGHBOURHOOD</h4>
+  <a href="{% url 'login' %}" class="btn btn-outline-primary text-center">Login</a>
+  <a href="{% url 'signup' %}" class="btn btn-outline-primary text-center">Signup</a>
+</div>
+
+{% endblock %}
