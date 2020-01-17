@@ -21,7 +21,7 @@ class TestNeighbourhoodModel(TestCase):
 # test for checking the instance of a class
   def test_instance(self):
     self.assertTrue(isinstance(self.new_neighbourhood,Neighbourhood))
-
+main'
 
 # test for creating a new neighbourhood
   def test_create_neighbourhood(self):
